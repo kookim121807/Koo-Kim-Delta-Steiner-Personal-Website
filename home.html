@@ -1754,25 +1754,39 @@
       const toggle = document.getElementById("themeToggle");
       const knob = document.getElementById("knob");
       const curtain = document.getElementById("themeCurtain");
-
-      function setTheme(t){
-function applyThemeColors(){
+      function applyThemeColors(){
+        const root = document.documentElement;
+        const rootStyles = getComputedStyle(root);
         const body = document.body;
-        if (!body) return;
-        const styles = getComputedStyle(body);
-        body.style.backgroundImage = styles.backgroundImage;
-        body.style.backgroundColor = styles.backgroundColor;
-        body.style.backgroundAttachment = styles.backgroundAttachment;
+        if (body){
+          body.style.backgroundImage = "";
+          body.style.backgroundColor = "";
+          body.style.backgroundAttachment = "";
+          void body.offsetHeight;
+        }
         const meta = document.querySelector('meta[name="theme-color"]');
         if (meta){
-          const bg1 = getComputedStyle(document.documentElement).getPropertyValue("--bg1").trim();
-          const bg0 = getComputedStyle(document.documentElement).getPropertyValue("--bg0").trim();
+          const bg1 = rootStyles.getPropertyValue("--bg1").trim();
+          const bg0 = rootStyles.getPropertyValue("--bg0").trim();
           meta.setAttribute('content', bg1 || bg0 || '#111827');
         }
+        root.style.colorScheme = root.getAttribute('data-theme') || 'dark';
+        const menuBg = rootStyles.getPropertyValue("--menu-bg").trim();
+        const menuShadow = rootStyles.getPropertyValue("--menu-shadow").trim();
+        const itemBg = rootStyles.getPropertyValue("--menu-item-bg").trim();
+        document.querySelectorAll(".mobile-menu").forEach((menu) => {
+          menu.style.background = menuBg || "";
+          menu.style.boxShadow = menuShadow || "";
+        });
+        document.querySelectorAll(".mobile-menu .navbtn, .mobile-menu .menu summary").forEach((btn) => {
+          btn.style.background = itemBg || "";
+        });
       }
 
-              root.setAttribute("data-theme", t);
+      function setTheme(t){
+        root.setAttribute("data-theme", t);
         localStorage.setItem("site-theme", t);
+        requestAnimationFrame(applyThemeColors);
         if (knob) knob.textContent = "";
       }
 
