@@ -1756,7 +1756,22 @@
       const curtain = document.getElementById("themeCurtain");
 
       function setTheme(t){
-        root.setAttribute("data-theme", t);
+function applyThemeColors(){
+        const body = document.body;
+        if (!body) return;
+        const styles = getComputedStyle(body);
+        body.style.backgroundImage = styles.backgroundImage;
+        body.style.backgroundColor = styles.backgroundColor;
+        body.style.backgroundAttachment = styles.backgroundAttachment;
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (meta){
+          const bg1 = getComputedStyle(document.documentElement).getPropertyValue("--bg1").trim();
+          const bg0 = getComputedStyle(document.documentElement).getPropertyValue("--bg0").trim();
+          meta.setAttribute('content', bg1 || bg0 || '#111827');
+        }
+      }
+
+              root.setAttribute("data-theme", t);
         localStorage.setItem("site-theme", t);
         if (knob) knob.textContent = "";
       }
@@ -1788,12 +1803,13 @@
 
       function initTheme(){
         const stored = localStorage.getItem("site-theme");
-        if (stored === "dark" || stored === "light") return setTheme(stored);
+        if (stored === "dark" || stored === "light") { setTheme(stored); return; }
         const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
         setTheme(prefersDark ? "dark" : "light");
       }
 
       initTheme();
+      applyThemeColors();
 
       if (toggle){
         toggle.addEventListener("click", function(){
