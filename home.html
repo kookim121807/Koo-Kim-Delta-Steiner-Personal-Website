@@ -256,6 +256,20 @@
       z-index: 80;
       align-items:stretch;
     }
+
+    :root[data-theme="dark"] .mobile-menu,
+    :root[data-theme="light"] .mobile-menu{
+      background: var(--menu-bg);
+      box-shadow: var(--menu-shadow);
+    }
+    .mobile-menu .navbtn,
+    .mobile-menu .menu summary{
+      background: var(--menu-item-bg);
+    }
+    .mobile-menu .navbtn:hover,
+    .mobile-menu .menu summary:hover{
+      background: var(--menu-item-hover);
+    }
     .mobile-menu .navbtn,
     .mobile-menu .menu summary{
       width: 100%;
