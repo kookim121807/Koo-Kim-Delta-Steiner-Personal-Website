@@ -227,7 +227,8 @@
       padding: 12px;
       border-radius: 12px;
       border: 1px solid var(--edge);
-      background: linear-gradient(180deg, var(--bg0), var(--bg1));
+      background: var(--menu-bg);
+      box-shadow: var(--menu-shadow);
       backdrop-filter: blur(12px) saturate(120%);
       display:none;
       opacity: 0;
@@ -236,6 +237,20 @@
       transition: opacity .16s ease, transform .16s ease;
       z-index: 80;
       align-items:stretch;
+    }
+
+    :root[data-theme="dark"] .mobile-menu,
+    :root[data-theme="light"] .mobile-menu{
+      background: var(--menu-bg);
+      box-shadow: var(--menu-shadow);
+    }
+    .mobile-menu .navbtn,
+    .mobile-menu .menu summary{
+      background: var(--menu-item-bg);
+    }
+    .mobile-menu .navbtn:hover,
+    .mobile-menu .menu summary:hover{
+      background: var(--menu-item-hover);
     }
     .mobile-menu .navbtn,
     .mobile-menu .menu summary{
@@ -846,6 +861,11 @@
       line-height: 1.6;
     }
 
+  
+    @media (max-width: 980px){
+      body{ background-attachment: scroll; }
+    }
+
   </style>
 </head>
 
@@ -1036,10 +1056,39 @@
       const root = document.documentElement;
       const toggle = document.getElementById("themeToggle");
       const curtain = document.getElementById("themeCurtain");
+      function applyThemeColors(){
+        const root = document.documentElement;
+        const rootStyles = getComputedStyle(root);
+        const body = document.body;
+        if (body){
+          body.style.backgroundImage = "";
+          body.style.backgroundColor = "";
+          body.style.backgroundAttachment = "";
+          void body.offsetHeight;
+        }
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (meta){
+          const bg1 = rootStyles.getPropertyValue("--bg1").trim();
+          const bg0 = rootStyles.getPropertyValue("--bg0").trim();
+          meta.setAttribute('content', bg1 || bg0 || '#111827');
+        }
+        root.style.colorScheme = root.getAttribute('data-theme') || 'dark';
+        const menuBg = rootStyles.getPropertyValue("--menu-bg").trim();
+        const menuShadow = rootStyles.getPropertyValue("--menu-shadow").trim();
+        const itemBg = rootStyles.getPropertyValue("--menu-item-bg").trim();
+        document.querySelectorAll(".mobile-menu").forEach((menu) => {
+          menu.style.background = menuBg || "";
+          menu.style.boxShadow = menuShadow || "";
+        });
+        document.querySelectorAll(".mobile-menu .navbtn, .mobile-menu .menu summary").forEach((btn) => {
+          btn.style.background = itemBg || "";
+        });
+      }
 
       function setTheme(t){
         root.setAttribute("data-theme", t);
         localStorage.setItem("site-theme", t);
+        requestAnimationFrame(applyThemeColors);
       }
 
       function animateThemeToggle(bg0, bg1){
@@ -1069,12 +1118,13 @@
 
       function initTheme(){
         const stored = localStorage.getItem("site-theme");
-        if (stored === "dark" || stored === "light") return setTheme(stored);
+        if (stored === "dark" || stored === "light") { setTheme(stored); return; }
         const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
         setTheme(prefersDark ? "dark" : "light");
       }
 
       initTheme();
+      applyThemeColors();
 
       if (toggle){
         toggle.addEventListener("click", function(){
