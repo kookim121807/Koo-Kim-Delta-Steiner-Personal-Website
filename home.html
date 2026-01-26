@@ -64,9 +64,9 @@
       --bg1:#ff1e3a;
       --panel: rgba(15,23,42,.06);
       --panel-2: rgba(15,23,42,.04);
-      --ink:#0f172a;
-      --muted:#475569;
-      --muted2:#64748b;
+      --ink:#000000;
+      --muted:#000000;
+      --muted2:#000000;
       --nav: rgba(255,120,70,.72);
       --footer: rgba(150,12,24,.92);
       --chip: rgba(255,160,92,.85);
@@ -517,6 +517,9 @@
       position: relative;
       box-shadow: 0 12px 30px rgba(0,0,0,.16);
     }
+    .catalog-panel.about-me-wide{
+      grid-column: 1 / -1;
+    }
     .catalog-panel::before{
       content:none;
     }
@@ -652,6 +655,20 @@
       position: relative;
       overflow:hidden;
     }
+    .about-text{
+      column-count: 2;
+      column-gap: 26px;
+    }
+    .about-text blockquote{
+      -webkit-column-span: all;
+      column-span: all;
+    }
+    @media (min-width: 1200px){
+      .about-text{ column-count: 3; }
+    }
+    @media (max-width: 980px){
+      .about-text{ column-count: 1; }
+    }
     .catalog-block.accent::before{
       content:"";
       position:absolute;
@@ -751,23 +768,28 @@
       margin: 0 0 10px;
       color: var(--ink);
     }
-    .catalog-columns{
+    .catalog-stack{
       display:grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: 1fr;
       gap: 12px;
       margin-top: 12px;
     }
-    @media (max-width: 980px){
-      .catalog-columns{ grid-template-columns: 1fr; }
+    .catalog-split{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
     }
-    .catalog-columns ul{
+    @media (max-width: 980px){
+      .catalog-split{ grid-template-columns: 1fr; }
+    }
+    .catalog-stack ul{
       margin: 0;
       padding-left: 18px;
       color: var(--muted);
       font-size: .86rem;
       line-height: 1.7;
     }
-    .catalog-columns li{ margin: 6px 0; }
+    .catalog-stack li{ margin: 6px 0; }
 
     .catalog-section{
       display:flex;
@@ -775,6 +797,22 @@
       gap: 16px;
       padding-top: 6px;
       border-top: 1px solid var(--edge);
+    }
+    .section-toggle{
+      display:flex;
+      flex-direction:column;
+      gap: 16px;
+    }
+    .section-toggle > summary{
+      list-style: none;
+      cursor: pointer;
+    }
+    .section-toggle > summary::-webkit-details-marker{
+      display: none;
+    }
+    .section-toggle[open] > summary .mini{ transform: rotate(90deg); }
+    .section-toggle .mini{
+      transition: transform .18s ease;
     }
     .section-head{
       display:flex;
@@ -959,6 +997,107 @@
       color: var(--muted);
       font-size: .88rem;
       line-height: 1.68;
+    }
+
+    .news-grid{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+    @media (max-width: 980px){
+      .news-grid{ grid-template-columns: 1fr; }
+    }
+    .news-card{
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      padding: 16px;
+      border-radius: 8px;
+      border: 1px solid var(--edge);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.02)),
+        radial-gradient(220px 120px at 0% 0%, rgba(255,255,255,.10), transparent 60%);
+      box-shadow: 0 16px 34px rgba(0,0,0,.22);
+      position: relative;
+      overflow:hidden;
+      transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease;
+      min-height: 420px;
+    }
+    .news-card::before{
+      content:"";
+      position:absolute;
+      inset:10px;
+      border:1px dashed rgba(255,255,255,.2);
+      border-radius: 6px;
+      opacity:.6;
+      pointer-events:none;
+    }
+    .news-card:hover{
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,.4);
+      box-shadow: 0 18px 38px rgba(0,0,0,.28);
+    }
+    .news-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+    }
+    .news-title{
+      font-family: var(--serif);
+      font-size: .98rem;
+      letter-spacing:.14em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+    .news-chip{
+      display:inline-flex;
+      align-items:center;
+      padding:.25rem .65rem;
+      border-radius: 999px;
+      border: 1px solid var(--edge);
+      background: rgba(255,255,255,.06);
+      color: var(--muted2);
+      font-size: .68rem;
+      letter-spacing:.12em;
+      text-transform: uppercase;
+    }
+    .news-text{
+      margin: 0;
+      color: var(--muted);
+      font-size: .88rem;
+      line-height: 1.7;
+    }
+    .news-preview{
+      border-radius: 6px;
+      border: 1px solid var(--edge);
+      background: rgba(5,10,25,.35);
+      padding: 8px;
+      position: relative;
+    }
+    .news-preview .page-preview{
+      border-radius: 6px;
+      height: 180px;
+    }
+    .news-cta{
+      position:absolute;
+      right: 12px;
+      bottom: 12px;
+      padding:.45rem .75rem;
+      border-radius: 999px;
+      border: 1px solid var(--edge);
+      background: linear-gradient(180deg, var(--btn), var(--btn2));
+      color: var(--ink);
+      font-size: .7rem;
+      letter-spacing:.14em;
+      text-transform: uppercase;
+      pointer-events:none;
+    }
+    .news-foot{
+      margin: 0;
+      color: var(--muted2);
+      font-size: .78rem;
+      line-height: 1.6;
     }
 
     .music-panel{
@@ -1445,7 +1584,14 @@
           <img src="./airplanekoo.jpg" alt="Koo Kim portrait" />
         </div>
 
-        <div class="intro">
+      </article>
+
+      <article class="catalog-panel">
+        <div class="label-row">
+          <span>Welcome</span>
+        </div>
+
+        <div class="intro" style="margin-top:14px;">
           <p class="leadline intro-cursive">Hi! My name is Koo, and I’m currently a Grade 12 (senior) student at Ruamrudee International School.</p>
           <p class="intro-cursive">I’m a prospective undergraduate student interested in majoring in Computer Science, Electrical Engineering, Mathematics, or Physics.</p>
           <p>You’re currently viewing the homepage of my personal website. Here, you can learn more about me, my research interests, my favorite warm-up games, daily news, hobbies, what I enjoy doing, my favorite music, and information about this site. If you’d like to learn more, please feel free to contact me.</p>
@@ -1458,12 +1604,12 @@
         </div>
       </article>
 
-      <article class="catalog-panel">
+      <article class="catalog-panel about-me-wide">
         <div class="label-row">
           <span>About Me</span>
         </div>
 
-        <div class="catalog-block accent" style="margin-top:12px;">
+        <div class="catalog-block accent about-text" style="margin-top:12px;">
           <blockquote class="pull-quote intro-cursive">At first glance, some people might assume I am a STEM-only nerd.</blockquote>
           <p>That is not completely true. I am not the biggest fan of biology, and I also enjoy philosophy, with a particular interest in Greek philosophy. I also find macroeconomics surprisingly fun.</p>
           <p>One fun fact is that I once tried to learn Ancient Greek but did not stick with it. I would still love to learn it in the future. Even so, my favorite subjects in school are mathematics, computer science, physics, and anything related to numbers and shapes. I am always open to learning new things, particularly topics I have never explored before. Recently, I have also become interested in materials science and mechanical engineering.</p>
@@ -1473,219 +1619,254 @@
           <p>Some of my favorite celebrities include BIGBANG (빅뱅), Heart2Hearts (하츠투하츠), BTS (방탄소년단), Stephen Curry, and Michael Jackson</p>
         </div>
 
-        <div class="catalog-columns">
-          <div class="catalog-block ribbon">
-            <h3 class="catalog-subtitle">Anime I Recommend</h3>
-            <ul>
-              <li>Detective Conan (Case Closed) series, including movies</li>
-              <li>Classroom of the Elite (Seasons 1 to 3)</li>
-              <li>The Angel Next Door Spoils Me Rotten</li>
-              <li>Demon Slayer</li>
-              <li>Crayon Shin-chan</li>
-              <li>Slam Dunk</li>
-              <li>Naruto</li>
-              <li>My Stepmom’s Daughter Is My Ex</li>
-              <li>Kaito Kid 1412</li>
-            </ul>
-            <div class="anime-logos">
-              <img src="detective-conan.png" alt="Detective Conan logo" />
-              <img src="classroom-elite.jpg" alt="Classroom of the Elite logo" />
-              <img src="angel-next-door.jpg" alt="The Angel Next Door Spoils Me Rotten logo" />
-              <img src="demon-slayer.jpg" alt="Demon Slayer logo" />
-              <img src="crayon-shin-chan.jpg" alt="Crayon Shin-chan logo" />
+        <div class="catalog-stack">
+          <div class="catalog-split">
+            <div class="catalog-block ribbon">
+              <h3 class="catalog-subtitle">Anime I Recommend</h3>
+              <ul>
+                <li>Detective Conan (Case Closed) series, including movies</li>
+                <li>Classroom of the Elite (Seasons 1 to 3)</li>
+                <li>The Angel Next Door Spoils Me Rotten</li>
+                <li>Demon Slayer</li>
+                <li>Crayon Shin-chan</li>
+                <li>Slam Dunk</li>
+                <li>Naruto</li>
+                <li>My Stepmom’s Daughter Is My Ex</li>
+                <li>Kaito Kid 1412</li>
+              </ul>
+              <div class="anime-logos">
+                <img src="detective-conan.png" alt="Detective Conan logo" />
+                <img src="classroom-elite.jpg" alt="Classroom of the Elite logo" />
+                <img src="angel-next-door.jpg" alt="The Angel Next Door Spoils Me Rotten logo" />
+                <img src="demon-slayer.jpg" alt="Demon Slayer logo" />
+                <img src="crayon-shin-chan.jpg" alt="Crayon Shin-chan logo" />
+              </div>
             </div>
-          </div>
 
-          <div class="catalog-block ribbon">
-            <h3 class="catalog-subtitle">K-pop Songs I’ve Been Listening to Recently</h3>
-            <ul>
-              <li>The 10 Reasons I Love You (그대를 사랑하는 10가지 이유) by Lee Seok-hoon (이석훈)</li>
-              <li>Without You (결국) by G-Dragon (지드래곤) featuring Rosé (로제)</li>
-              <li>Haru Haru (하루하루) by BIGBANG (빅뱅)</li>
-              <li>Focus by Heart2Hearts (하츠투하츠)</li>
-              <li>Love Love Love by Epik High (에픽하이)</li>
-              <li>My Love Crybaby (내 사랑 울보) by SG Wannabe (SG 워너비)</li>
-              <li>Running (달려) by Gaho (가호)</li>
-              <li>Crooked (삐딱하게) by G-Dragon (지드래곤)</li>
-              <li>Dream High by Taecyeon, Wooyoung, Suzy, Kim Soo-hyun, and IU (택연, 우영, 수지, 김수현, 아이유)</li>
-            </ul>
+            <div class="catalog-block ribbon">
+              <h3 class="catalog-subtitle">K-pop Songs I’ve Been Listening to Recently</h3>
+              <ul>
+                <li>The 10 Reasons I Love You (그대를 사랑하는 10가지 이유) by Lee Seok-hoon (이석훈)</li>
+                <li>Without You (결국) by G-Dragon (지드래곤) featuring Rosé (로제)</li>
+                <li>Haru Haru (하루하루) by BIGBANG (빅뱅)</li>
+                <li>Focus by Heart2Hearts (하츠투하츠)</li>
+                <li>Love Love Love by Epik High (에픽하이)</li>
+                <li>My Love Crybaby (내 사랑 울보) by SG Wannabe (SG 워너비)</li>
+                <li>Running (달려) by Gaho (가호)</li>
+                <li>Crooked (삐딱하게) by G-Dragon (지드래곤)</li>
+                <li>Dream High by Taecyeon, Wooyoung, Suzy, Kim Soo-hyun, and IU (택연, 우영, 수지, 김수현, 아이유)</li>
+                <li>What Is Right by BIGBANG (빅뱅)</li>
+                <li>Breathe by G-Dragon (지드래곤)</li>
+              </ul>
+            </div>
           </div>
         </div>
       </article>
     </section>
 
-    <section class="catalog-section reveal">
+    <section class="catalog-section">
       <div class="section-head">
         <h2>Daily News</h2>
         <span class="section-line"></span>
       </div>
 
-      <div class="nav-grid" role="list">
-        <a class="nav-card featured" href="https://kookim121807.github.io/DELONEX/positions.html" role="listitem">
-          <div class="t">DELONEX <span class="mini">→</span></div>
-          <div class="d">I am excited to announce that my non-profit, DELONEX, will be officially launching soon! DELONEX is a student-led organization focused on artificial intelligence, computer science, mathematics, and physics, and my friends and I are building it together during high school.</div>
-          <div class="preview-wrap preview-spacer">
+      <div class="news-grid" role="list">
+        <a class="news-card" href="https://kookim121807.github.io/DELONEX/positions.html" role="listitem">
+          <div class="news-head">
+            <div class="news-title">DELONEX</div>
+            <span class="news-chip">Launch</span>
+          </div>
+          <p class="news-text">I am excited to announce that my non-profit, DELONEX, will be officially launching soon! DELONEX is a student-led organization focused on artificial intelligence, computer science, mathematics, and physics, and my friends and I are building it together during high school.</p>
+          <div class="news-preview">
             <iframe class="page-preview" src="https://kookim121807.github.io/DELONEX/positions.html" title="DELONEX positions preview"></iframe>
-            <span class="preview-link" aria-hidden="true">Open DELONEX</span>
+            <span class="news-cta" aria-hidden="true">Open DELONEX</span>
           </div>
-          <div class="d">Please click the live page above to view the positions page for DELONEX.</div>
+          <p class="news-foot">Please click the live page above to view the positions page for DELONEX.</p>
         </a>
-        <a class="nav-card featured" href="research.html" role="listitem">
-          <div class="t">Research <span class="mini">→</span></div>
-          <div class="d">I am pleased to announce that my third research commitment will be officially revealed soon. It will focus on materials science, mechanical engineering, computer engineering, cars, motors, and innovations. I hope you are ready to get hyped and stay tuned.</div>
-          <div class="preview-wrap preview-spacer">
+        <a class="news-card" href="research.html" role="listitem">
+          <div class="news-head">
+            <div class="news-title">Research</div>
+            <span class="news-chip">Update</span>
+          </div>
+          <p class="news-text">I am pleased to announce that my third research commitment will be officially revealed soon. It will focus on materials science, mechanical engineering, computer engineering, cars, motors, and innovations. I hope you are ready to get hyped and stay tuned.</p>
+          <div class="news-preview">
             <iframe class="page-preview" src="research.html" title="Research updates preview"></iframe>
-            <span class="preview-link" aria-hidden="true">Open Research</span>
+            <span class="news-cta" aria-hidden="true">Open Research</span>
           </div>
-          <div class="d">Please click the live page above to view my most recent research updates.</div>
+          <p class="news-foot">Please click the live page above to view my most recent research updates.</p>
         </a>
-        <a class="nav-card featured" href="mentorships.html" role="listitem">
-          <div class="t">Mentorships <span class="mini">→</span></div>
-          <div class="d">I am more than happy to support students throughout their high school journey, particularly those in Grades 9 to 11, with extracurricular planning. I have the most experience with research and tutoring, so if you are interested in pursuing any of those during, I would love to help.</div>
-          <div class="preview-wrap preview-spacer">
+        <a class="news-card" href="mentorships.html" role="listitem">
+          <div class="news-head">
+            <div class="news-title">Mentorships</div>
+            <span class="news-chip">Open</span>
+          </div>
+          <p class="news-text">I am more than happy to support students throughout their high school journey, particularly those in Grades 9 to 11, with extracurricular planning. I have the most experience with research and tutoring, so if you are interested in pursuing any of those during, I would love to help.</p>
+          <div class="news-preview">
             <iframe class="page-preview" src="mentorships.html" title="Mentorships page preview"></iframe>
-            <span class="preview-link" aria-hidden="true">Open Mentorships</span>
+            <span class="news-cta" aria-hidden="true">Open Mentorships</span>
           </div>
-          <div class="d">Please click the live page above to fill out the form on the Mentorship page.</div>
+          <p class="news-foot">Please click the live page above to fill out the form on the Mentorship page.</p>
         </a>
       </div>
     </section>
 
-    <section class="catalog-section reveal">
-      <div class="section-head">
-        <h2>Research</h2>
-        <span class="section-line"></span>
-      </div>
+    <section class="catalog-section">
+      <details class="section-toggle">
+        <summary class="section-head">
+          <h2>Research</h2>
+          <span class="section-line"></span>
+          <span class="mini">→</span>
+        </summary>
 
-      <div class="research-layout">
-        <div class="research-column">
-          <div class="catalog-box research-card">
-            <h3>Research Interests</h3>
-            <p>My research interests span six main areas: artificial intelligence, combinatorics, geometry, machine learning, quantum mechanics, and statistics.</p>
+        <div class="research-layout">
+          <div class="research-column">
+            <div class="catalog-box research-card">
+              <h3>Research Interests</h3>
+              <p>My research interests span six main areas: artificial intelligence, combinatorics, geometry, machine learning, quantum mechanics, and statistics.</p>
+            </div>
+            <div class="catalog-box research-card">
+              <h3>Exploration</h3>
+              <p>I am also curious about and open to exploring electrical circuits, computational physics, discrete mathematics, topology, algorithmic structures, and natural language processing.</p>
+            </div>
+            <div class="catalog-box research-card">
+              <h3>Interested?</h3>
+              <p>If you are interested in my research, please click the live page below.</p>
+              <div class="preview-wrap preview-spacer">
+                <iframe class="page-preview" src="research.html" title="Research page preview"></iframe>
+                <a class="preview-link" href="research.html">Open Research</a>
+              </div>
+            </div>
           </div>
-          <div class="catalog-box research-card">
-            <h3>Exploration</h3>
-            <p>I am also curious about and open to exploring electrical circuits, computational physics, discrete mathematics, topology, algorithmic structures, and natural language processing.</p>
-          </div>
-          <div class="catalog-box research-card">
-            <h3>Interested?</h3>
-            <p>If you are interested in my research, please click the live page below.</p>
-            <div class="preview-wrap preview-spacer">
-              <iframe class="page-preview" src="research.html" title="Research page preview"></iframe>
-              <a class="preview-link" href="research.html">Open Research</a>
+          <div class="research-column">
+            <div class="catalog-box research-card">
+              <h3>Research Experiences</h3>
+              <p class="em">I am currently involved in two research projects.</p>
+              <p class="em intro-cursive">University of Illinois Urbana-Champaign • Additive Combinatorics and Discrete Mathematics</p>
+              <img class="school-logo" src="uiuc.png" alt="University of Illinois Urbana-Champaign logo" />
+              <p>I am supervised and mentored by Professor <a class="inline-link" href="https://sites.google.com/view/jozsefbaloghmath/home">József Balogh</a> at the University of Illinois Urbana-Champaign, where I am collaborating on a research paper in additive combinatorics and discrete mathematics. Our project focuses on improving the best known upper bound for the maximum size of a Sidon set. This area involves advanced algebra and applied mathematics. Professor Balogh and his colleagues established an upper bound of about 0.998 through rigorous hand proofs, while previous UIUC students achieved a tighter bound using computational methods. My goal is to combine hand verification and computation to prove an even stronger bound than the current best result. To support this, I am developing new theorems and lemmas as part of the proof.</p>
+              <p class="em intro-cursive">National University of Singapore • Planned Collaboration in Statistical Inference, Combinatorial Inference, Computational Applied Mathematics</p>
+              <img class="school-logo" src="nus.jpg" alt="National University of Singapore logo" />
+              <p>I have also begun discussions about a second research collaboration with Professor <a class="inline-link" href="https://judygiant.github.io/">Shuting Shen</a> at the National University of Singapore. Our planned research will involve combinatorial inference, statistical inference, and computational applied mathematics. We have not finalized a specific problem or abstract yet, but we expect to begin formal work in January 2026.</p>
             </div>
           </div>
         </div>
-        <div class="research-column">
-          <div class="catalog-box research-card">
-            <h3>Research Experiences</h3>
-            <p class="em">I am currently involved in two research projects.</p>
-            <p class="em intro-cursive">University of Illinois Urbana-Champaign • Additive Combinatorics and Discrete Mathematics</p>
-            <img class="school-logo" src="uiuc.png" alt="University of Illinois Urbana-Champaign logo" />
-            <p>I am supervised and mentored by Professor <a class="inline-link" href="https://sites.google.com/view/jozsefbaloghmath/home">József Balogh</a> at the University of Illinois Urbana-Champaign, where I am collaborating on a research paper in additive combinatorics and discrete mathematics. Our project focuses on improving the best known upper bound for the maximum size of a Sidon set. This area involves advanced algebra and applied mathematics. Professor Balogh and his colleagues established an upper bound of about 0.998 through rigorous hand proofs, while previous UIUC students achieved a tighter bound using computational methods. My goal is to combine hand verification and computation to prove an even stronger bound than the current best result. To support this, I am developing new theorems and lemmas as part of the proof.</p>
-            <p class="em intro-cursive">National University of Singapore • Planned Collaboration in Statistical Inference, Combinatorial Inference, Computational Applied Mathematics</p>
-            <img class="school-logo" src="nus.jpg" alt="National University of Singapore logo" />
-            <p>I have also begun discussions about a second research collaboration with Professor <a class="inline-link" href="https://judygiant.github.io/">Shuting Shen</a> at the National University of Singapore. Our planned research will involve combinatorial inference, statistical inference, and computational applied mathematics. We have not finalized a specific problem or abstract yet, but we expect to begin formal work in January 2026.</p>
-          </div>
-        </div>
-      </div>
+      </details>
     </section>
 
-    <section class="catalog-section reveal">
-      <div class="section-head">
-        <h2>Coding</h2>
-        <span class="section-line"></span>
-      </div>
-
-      <div class="research-layout">
-        <div class="research-column">
-          <div class="catalog-box research-card">
-            <h3>Languages I Use</h3>
-            <p>I primarily code in JavaScript and Python. I do not use Java as often, but I am currently learning it through AP Computer Science A.</p>
-            <p>I am also interested in learning C++ and exploring more advanced computer science languages as I take more rigorous courses in college. I hope to dive deeper into these soon.</p>
-          </div>
-          <div class="catalog-box research-card">
-            <h3>Interested?</h3>
-            <p>If you are interested in my coding, please click the live page below.</p>
-            <div class="preview-wrap preview-spacer">
-              <iframe class="page-preview" src="coding.html" title="Coding page preview"></iframe>
-              <a class="preview-link" href="coding.html">Open Coding</a>
-            </div>
-          </div>
+    <section class="catalog-section">
+      <details class="section-toggle">
+        <summary class="section-head">
+          <h2>Research Group</h2>
+          <span class="section-line"></span>
+          <span class="mini">→</span>
+        </summary>
+        <div class="catalog-box research-card">
+          <h3>Research Group</h3>
         </div>
-        <div class="research-column">
-          <div class="catalog-box research-card">
-            <h3>Coding Experiences</h3>
-            <p class="spacer">I am the founder and CEO of DELONEX, a student-led platform focused on AI, computer science, mathematics, and physics. If you are interested in my projects or the team behind them, please use the button below to explore the programs I have built over the past few months.</p>
-            <div class="preview-wrap preview-spacer preview-gap-bottom">
-              <iframe class="page-preview" src="https://kookim121807.github.io/DELONEX/delonex.html" title="DELONEX page preview"></iframe>
-              <a class="preview-link" href="https://kookim121807.github.io/DELONEX/delonex.html">Open DELONEX</a>
-            </div>
-            <p class="spacer">Outside of DELONEX, I am also developing an independent project: a Ruamrudee International School Class of 2026 seniors hub, designed as an e-book and webpage platform. I would like to give special thanks to Jeremy Chen (Class of 2026), who has been helping me build this project, along with other supportive seniors who are contributing to the website.</p>
-          </div>
-        </div>
-      </div>
+      </details>
     </section>
 
-    <section class="catalog-section reveal" aria-label="Warmup Games">
-      <div class="section-head">
-        <h2>Warmup Games</h2>
-        <span class="section-line"></span>
-      </div>
+    <section class="catalog-section">
+      <details class="section-toggle">
+        <summary class="section-head">
+          <h2>Coding</h2>
+          <span class="section-line"></span>
+          <span class="mini">→</span>
+        </summary>
 
-      <div class="games-grid">
-        <div class="catalog-box game-card" id="sudoku">
-          <h3>Sudoku</h3>
-          <div class="game-meta">9×9</div>
-          <div class="sudoku-grid" id="sudokuGrid" aria-label="Sudoku grid"></div>
-          <div class="game-actions">
-            <button class="game-btn" id="sudokuNew">New</button>
-            <button class="game-btn" id="sudokuCheck">Check</button>
-            <button class="game-btn" id="sudokuClear">Clear</button>
-            <div class="game-status" id="sudokuStatus" aria-live="polite"></div>
+        <div class="research-layout">
+          <div class="research-column">
+            <div class="catalog-box research-card">
+              <h3>Languages I Use</h3>
+              <p>I primarily code in JavaScript and Python. I do not use Java as often, but I am currently learning it through AP Computer Science A.</p>
+              <p>I am also interested in learning C++ and exploring more advanced computer science languages as I take more rigorous courses in college. I hope to dive deeper into these soon.</p>
+            </div>
+            <div class="catalog-box research-card">
+              <h3>Interested?</h3>
+              <p>If you are interested in my coding, please click the live page below.</p>
+              <div class="preview-wrap preview-spacer">
+                <iframe class="page-preview" src="coding.html" title="Coding page preview"></iframe>
+                <a class="preview-link" href="coding.html">Open Coding</a>
+              </div>
+            </div>
+          </div>
+          <div class="research-column">
+            <div class="catalog-box research-card">
+              <h3>Coding Experiences</h3>
+              <p class="spacer">I am the founder and CEO of DELONEX, a student-led platform focused on AI, computer science, mathematics, and physics. If you are interested in my projects or the team behind them, please use the button below to explore the programs I have built over the past few months.</p>
+              <div class="preview-wrap preview-spacer preview-gap-bottom">
+                <iframe class="page-preview" src="https://kookim121807.github.io/DELONEX/delonex.html" title="DELONEX page preview"></iframe>
+                <a class="preview-link" href="https://kookim121807.github.io/DELONEX/delonex.html">Open DELONEX</a>
+              </div>
+              <p class="spacer">Outside of DELONEX, I am also developing an independent project: a Ruamrudee International School Class of 2026 seniors hub, designed as an e-book and webpage platform. I would like to give special thanks to Jeremy Chen (Class of 2026), who has been helping me build this project, along with other supportive seniors who are contributing to the website.</p>
+            </div>
           </div>
         </div>
+      </details>
+    </section>
 
-        <div class="catalog-box game-card" id="tetris">
-          <h3>Tetris</h3>
-          <div class="game-meta">Mini</div>
-          <div class="tetris-row">
-          <canvas class="tetris-canvas" id="tetrisCanvas" width="270" height="360" aria-label="Tetris game" tabindex="0"></canvas>
-            <div class="scorebox" aria-label="Player score submission">
-              <div class="score-title">Player Scores</div>
-              <div class="score-form">
-              <label>
-                <span class="sr-only">Username</span>
-                <input type="text" id="tetrisNameInput" placeholder="Username" />
-              </label>
-              <label>
-                <span class="sr-only">ID Number</span>
-                <input type="text" id="tetrisIdInput" placeholder="ID Number" readonly />
-              </label>
-              <div class="score-row">
+    <section class="catalog-section" aria-label="Warmup Games">
+      <details class="section-toggle">
+        <summary class="section-head">
+          <h2>Warmup Games</h2>
+          <span class="section-line"></span>
+          <span class="mini">→</span>
+        </summary>
+
+        <div class="games-grid">
+          <div class="catalog-box game-card" id="sudoku">
+            <h3>Sudoku</h3>
+            <div class="game-meta">9×9</div>
+            <div class="sudoku-grid" id="sudokuGrid" aria-label="Sudoku grid"></div>
+            <div class="game-actions">
+              <button class="game-btn" id="sudokuNew">New</button>
+              <button class="game-btn" id="sudokuCheck">Check</button>
+              <button class="game-btn" id="sudokuClear">Clear</button>
+              <div class="game-status" id="sudokuStatus" aria-live="polite"></div>
+            </div>
+          </div>
+
+          <div class="catalog-box game-card" id="tetris">
+            <h3>Tetris</h3>
+            <div class="game-meta">Mini</div>
+            <div class="tetris-row">
+            <canvas class="tetris-canvas" id="tetrisCanvas" width="270" height="360" aria-label="Tetris game" tabindex="0"></canvas>
+              <div class="scorebox" aria-label="Player score submission">
+                <div class="score-title">Player Scores</div>
+                <div class="score-form">
                 <label>
-                  <span class="sr-only">Score</span>
-                  <input type="number" id="tetrisScoreInput" placeholder="Score" readonly />
+                  <span class="sr-only">Username</span>
+                  <input type="text" id="tetrisNameInput" placeholder="Username" />
                 </label>
-                <button class="game-btn" id="tetrisSubmit" type="button">Submit</button>
+                <label>
+                  <span class="sr-only">ID Number</span>
+                  <input type="text" id="tetrisIdInput" placeholder="ID Number" readonly />
+                </label>
+                <div class="score-row">
+                  <label>
+                    <span class="sr-only">Score</span>
+                    <input type="number" id="tetrisScoreInput" placeholder="Score" readonly />
+                  </label>
+                  <button class="game-btn" id="tetrisSubmit" type="button">Submit</button>
+                </div>
+              </div>
+              <div class="score-list">
+                  <div><span>1.</span> Guest • 0</div>
+                  <div><span>2.</span> Player • 0</div>
+                  <div><span>3.</span> Runner • 0</div>
+                </div>
               </div>
             </div>
-            <div class="score-list">
-                <div><span>1.</span> Guest • 0</div>
-                <div><span>2.</span> Player • 0</div>
-                <div><span>3.</span> Runner • 0</div>
-              </div>
+            <div class="game-actions">
+              <button class="game-btn" id="tetrisStart">Start</button>
+              <button class="game-btn" id="tetrisPause">Pause</button>
+              <button class="game-btn" id="tetrisReset">Reset</button>
+              <div class="game-status" id="tetrisStatus" aria-live="polite">Score: 0</div>
             </div>
+            <div class="game-help">Controls: ← → move, ↑ rotate, ↓ soft drop, Space hard drop.</div>
           </div>
-          <div class="game-actions">
-            <button class="game-btn" id="tetrisStart">Start</button>
-            <button class="game-btn" id="tetrisPause">Pause</button>
-            <button class="game-btn" id="tetrisReset">Reset</button>
-            <div class="game-status" id="tetrisStatus" aria-live="polite">Score: 0</div>
-          </div>
-          <div class="game-help">Controls: ← → move, ↑ rotate, ↓ soft drop, Space hard drop.</div>
         </div>
-      </div>
+      </details>
     </section>
 
     <section class="catalog-section reveal" aria-label="Playlsits">
@@ -1713,7 +1894,7 @@
               frameborder="0"
               height="175"
               sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation"
-              src="https://embed.music.apple.com/us/song/dream-high/417698272">
+              src="https://embed.music.apple.com/us/song/what-is-right/1336413344">
             </iframe>
           </div>
 
@@ -1733,7 +1914,7 @@
               frameborder="0"
               height="175"
               sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-top-navigation-by-user-activation"
-              src="https://embed.music.apple.com/us/song/focus/1841828520?autoplay=1">
+              src="https://embed.music.apple.com/us/song/breathe/1337476501">
             </iframe>
           </div>
         </div>
@@ -1783,10 +1964,35 @@
         });
       }
 
+      function updatePreviewTheme(t){
+        const frames = document.querySelectorAll("iframe.page-preview");
+        frames.forEach((frame) => {
+          const src = frame.getAttribute("src");
+          if (!src) return;
+          try {
+            const url = new URL(src, window.location.href);
+            if (url.searchParams.get("theme") === t) return;
+            url.searchParams.set("theme", t);
+            frame.setAttribute("src", url.toString());
+          } catch (e) {}
+        });
+        document.querySelectorAll("a.preview-link").forEach((link) => {
+          const href = link.getAttribute("href");
+          if (!href) return;
+          try {
+            const url = new URL(href, window.location.href);
+            if (url.searchParams.get("theme") === t) return;
+            url.searchParams.set("theme", t);
+            link.setAttribute("href", url.toString());
+          } catch (e) {}
+        });
+      }
+
       function setTheme(t){
         root.setAttribute("data-theme", t);
         localStorage.setItem("site-theme", t);
         requestAnimationFrame(applyThemeColors);
+        updatePreviewTheme(t);
         if (knob) knob.textContent = "";
       }
 
@@ -1851,10 +2057,10 @@
 
     (function(){
       const btn = document.getElementById("musicFallback");
-      const focusFrame = document.querySelector(
-        ".music-cards iframe[src*='embed.music.apple.com'][src*='focus']"
+      const breatheFrame = document.querySelector(
+        ".music-cards iframe[src*='embed.music.apple.com'][src*='breathe']"
       );
-      if (!btn || !focusFrame) return;
+      if (!btn || !breatheFrame) return;
 
       let userInteracted = false;
       function hideButton(){
@@ -1874,7 +2080,7 @@
       }, 1500);
 
       btn.addEventListener("click", function(){
-        const base = focusFrame.getAttribute("src") || "";
+        const base = breatheFrame.getAttribute("src") || "";
         if (!base) return;
         const url = base + (base.indexOf("?") === -1 ? "?autoplay=1" : "&t=" + Date.now());
         focusFrame.setAttribute("src", url);
@@ -2187,6 +2393,21 @@
       canvas.addEventListener("mouseleave", function(){ tetrisActive = false; });
       canvas.addEventListener("focus", function(){ tetrisActive = true; });
       canvas.addEventListener("blur", function(){ tetrisActive = false; });
+      canvas.addEventListener("touchstart", function(e){
+        tetrisActive = true;
+        if (!currentPiece || paused) return;
+        const rot = rotate(currentPiece.shape);
+        if (!collide(currentPiece, 0, 0, rot)) currentPiece.shape = rot;
+        draw();
+        e.preventDefault();
+      }, { passive: false });
+      canvas.addEventListener("pointerdown", function(e){
+        if (e.pointerType !== "mouse") tetrisActive = true;
+        if (!currentPiece || paused) return;
+        const rot = rotate(currentPiece.shape);
+        if (!collide(currentPiece, 0, 0, rot)) currentPiece.shape = rot;
+        draw();
+      });
 
       if (tSubmit){
         tSubmit.addEventListener("click", function(){
